@@ -1,0 +1,249 @@
+body {
+    background-color: #121212 !important;
+    color: #ffffff !important;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    padding: 0;
+  }
+  
+  /* Layout containers */
+  .split-container {
+    display: flex;
+    width: 100%;
+    height: 100vh;
+    overflow: hidden;
+    position: relative;
+  }
+  
+  .left-pane,
+  .right-pane {
+    display: flex;
+    flex-direction: column;
+    overflow: auto;
+  }
+  
+  .resizer {
+    width: 5px;
+    background: #888;
+    cursor: col-resize;
+    user-select: none;
+  }
+  
+  /* Chat Window */
+  .chat-window {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    padding: 1rem;
+  }
+  
+  .conversation-container {
+    background-color: #1e1e1e;
+    border: 1px solid #333333;
+    padding: 15px;
+    flex: 1;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 1rem;
+  }
+  
+  .message {
+    max-width: 80%;
+    margin-bottom: 10px;
+    padding: 10px;
+    border-radius: 15px;
+    display: inline-block;
+    word-wrap: break-word;
+  }
+  
+  .message.user {
+    background-color: #0d6efd;
+    color: #ffffff;
+    align-self: flex-end;
+    margin-left: auto;
+    border-bottom-right-radius: 0;
+  }
+  
+  .message.ai {
+    background-color: #343a40;
+    color: #ffffff;
+    align-self: flex-start;
+    margin-right: auto;
+    border-bottom-left-radius: 0;
+  }
+  
+  .message pre {
+    background-color: #2d2d2d;
+    padding: 10px;
+    border-radius: 5px;
+    overflow-x: auto;
+}
+
+.web-viewer-container {
+    width: 100%;
+    height: 100%;
+    padding: 1rem;
+    box-sizing: border-box;
+}
+
+.input-group .form-control {
+  }
+  
+  /* Chat input */
+  .input-group {
+    display: flex;
+  }
+  
+  .input-group .form-control {
+    background-color: #1e1e1e !important;
+    color: #ffffff !important;
+    border: 1px solid #333333 !important;
+  }
+  
+  .input-group .form-control:focus {
+    background-color: #1e1e1e !important;
+    color: #ffffff !important;
+    border-color: #555555 !important;
+    box-shadow: none !important;
+  }
+  
+  .input-group .btn {
+    border: 1px solid #333333 !important;
+  }
+  
+  .btn-primary {
+    background-color: #0d6efd !important;
+    border: none !important;
+  }
+  
+  .btn-primary:hover {
+    background-color: #0b5ed7 !important;
+  }
+  
+  /* Right side = tab layout */
+  .right-pane {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+  }
+  
+  /* Tabs container fills entire right pane */
+  .tabs-container {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+  }
+  
+  /* The row with the two tab buttons */
+  .tabs-buttons {
+    display: flex;
+    border-bottom: 1px solid #333;
+    padding-left: 0.5rem;
+  }
+  
+  .tab-button {
+    background-color: #1e1e1e;
+    border: none;
+    color: #fff;
+    padding: 0.75rem 1.25rem;
+    cursor: pointer;
+    font-size: 1rem;
+    border-radius: 4px 4px 0 0;
+    margin-right: 2px;
+  }
+  
+  .tab-button:hover {
+    background-color: #2a2a2a;
+  }
+  
+  .tab-button.active {
+    background-color: #343a40;
+  }
+  
+  /* The main area that changes depending on active tab */
+  .tabs-content {
+    flex: 1;
+    background-color: #121212;
+    border-left: 1px solid #333;
+    border-right: 1px solid #333;
+    border-bottom: 1px solid #333;
+    border-radius: 0 0 5px 5px;
+    display: flex; 
+    box-sizing: border-box;
+    /* No overflow scroll here so SVG won't get scrolled */
+    overflow: hidden;
+    padding: 1rem;
+  }
+  
+  /* CODE SECTION */
+  .code-section {
+    width: 100%;
+    border: 1px solid #333;
+    border-radius: 5px;
+    background-color: #1e1e1e;
+    display: flex;
+    flex-direction: column;
+    overflow: auto; /* So code can scroll if large */
+  }
+  
+  /* Code editor container with line numbers */
+  .code-editor-container {
+    display: flex;
+    flex: 1;
+    position: relative;
+  }
+  
+  .line-numbers {
+    background-color: #2a2a2a;
+    padding: 0.5rem 0.75rem;
+    text-align: right;
+    user-select: none;
+  }
+  
+  .line-number {
+    color: #888;
+    line-height: 1.5em;
+    font-family: Consolas, "Courier New", monospace;
+  }
+  
+  .code-textarea {
+    flex: 1;
+    border: none;
+    margin: 0;
+    padding: 0.5rem;
+    background-color: #1e1e1e;
+    color: #ffffff;
+    font-family: Consolas, "Courier New", monospace;
+    resize: none;
+    outline: none;
+    line-height: 1.5em;
+    overflow: auto;
+    white-space: pre;
+  }
+  
+  /* SVG section with no scrolling */
+  .svg-section {
+    width: 100%;
+    border: 1px solid #333;
+    border-radius: 5px;
+    background-color: #1e1e1e;
+    box-sizing: border-box;
+    overflow: hidden; /* Constrained, no scroll */
+  }
+  
+  /* Mobile adjustments */
+  @media (max-width: 576px) {
+    .split-container {
+      flex-direction: column;
+    }
+    .resizer {
+      display: none;
+    }
+    .left-pane,
+    .right-pane {
+      width: 100% !important;
+      height: auto;
+    }
+  }
+  

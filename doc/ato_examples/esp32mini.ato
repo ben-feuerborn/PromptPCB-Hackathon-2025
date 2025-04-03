@@ -1,0 +1,158 @@
+import Power from "generics/interfaces.ato"
+from "generics/resistors.ato" import Resistor
+from "generics/regulators.ato" import FixedLDO
+import FixedLDO from "generics/regulators.ato"
+import Capacitor from "generics/capacitors.ato"
+
+component _ESP32_C6_MINI_1_N4:
+    # component ESP32_C6_MINI_1_N4
+    footprint = "WIFIM-SMD_61P-L16.6-W13.2-P0.80-ESP32-C6-MINI-1-N4"
+    lcsc_id = "C5736265"
+    mpn = "C5736265"
+    # pins
+    signal GND ~ pin 1
+    GND ~ pin 2
+    signal _3V3 ~ pin 3
+    signal NC ~ pin 4
+    signal IO2 ~ pin 5
+    signal IO3 ~ pin 6
+    NC ~ pin 7
+    signal EN ~ pin 8
+    signal IO4 ~ pin 9
+    signal IO5 ~ pin 10
+    GND ~ pin 11
+    signal IO0 ~ pin 12
+    signal IO1 ~ pin 13
+    GND ~ pin 14
+    signal IO6 ~ pin 15
+    signal IO7 ~ pin 16
+    signal IO12 ~ pin 17
+    signal IO13 ~ pin 18
+    signal IO14 ~ pin 19
+    signal IO15 ~ pin 20
+    NC ~ pin 21
+    signal IO8 ~ pin 22
+    signal IO9 ~ pin 23
+    signal IO18 ~ pin 24
+    signal IO19 ~ pin 25
+    signal IO20 ~ pin 26
+    signal IO21 ~ pin 27
+    signal IO22 ~ pin 28
+    signal IO23 ~ pin 29
+    signal RXD0 ~ pin 30
+    signal TXD0 ~ pin 31
+    NC ~ pin 32
+    NC ~ pin 33
+    NC ~ pin 34
+    NC ~ pin 35
+    GND ~ pin 36
+    GND ~ pin 37
+    GND ~ pin 38
+    GND ~ pin 39
+    GND ~ pin 40
+    GND ~ pin 41
+    GND ~ pin 42
+    GND ~ pin 43
+    GND ~ pin 44
+    GND ~ pin 45
+    GND ~ pin 46
+    GND ~ pin 47
+    GND ~ pin 48
+    GND ~ pin 49
+    GND ~ pin 50
+    GND ~ pin 51
+    GND ~ pin 52
+    GND ~ pin 53
+
+module ESP32_C6_MINI_1_N4:
+    esp = new _ESP32_C6_MINI_1_N4
+    power = new Power
+
+    # decoupling capacitors
+    # boot buttons
+    # etc...
+
+    # power
+    esp._3V3 ~ power.vcc
+    esp.GND ~ power.gnd
+
+component LIS2DH12TR:
+    # component LIS2DH12TR
+    footprint = "LGA-12_L2.0-W2.0-P0.50-BL"
+    lcsc_id = "C110926"
+    mpn = "C110926"
+    # pins
+    signal SCL_slash_SPC ~ pin 1
+    signal CS ~ pin 2
+    signal SDO_slash_SA0 ~ pin 3
+    signal SDA_slash_SDI_slash_SDO ~ pin 4
+    signal RES ~ pin 5
+    signal GND ~ pin 6
+    GND ~ pin 7
+    GND ~ pin 8
+    signal VDD ~ pin 9
+    signal VDD_IO ~ pin 10
+    signal INT2 ~ pin 11
+    signal INT1 ~ pin 12
+
+component _XC6220B331MR_G:
+    # component XC6220B331MR_G
+    footprint = "SOT-25_L3.0-W1.6-P0.95-LS2.8-TL"
+    lcsc_id = "C86534"
+    mpn = "C86534"
+    # pins
+    signal VIN ~ pin 1
+    signal VSS ~ pin 2
+    signal CE ~ pin 3
+    signal NC ~ pin 4
+    signal VOUT ~ pin 5
+
+
+module XC6220B331MR from FixedLDO:
+    """
+    Voltage regulator with fixed 3.3V output,
+    900mA max current, 25uA quiescient current
+    max 6.5V input voltage, 0.45V dropout voltage
+    """
+    v_in: voltage
+
+    assert v_in within 3.3V to 6.5V
+
+    ldo = new _XC6220B331MR_G
+
+    power_in.vcc ~ ldo.VIN
+    power_in.vcc ~ ldo.CE
+    power_in.gnd ~ ldo.VSS
+    power_out.vcc ~ ldo.VOUT
+
+    # input cap
+    input_bypass = new Capacitor
+    power_in ~ input_bypass.power
+    input_bypass.value = 10uF +/- 20%
+    input_bypass.footprint = "C0603"
+
+    # output cap
+    output_bypass = new Capacitor
+    power_out ~ output_bypass.power
+    output_bypass.value = 10uF +/- 20%
+    output_bypass.footprint = "C0603"
+
+module PowerSupply:
+    power_3v3 = new Power
+    ldo = new FixedLDO
+
+    # select component
+    ldo -> XC6220B331MR
+
+    # input
+    ldo.v_in = 5V +/- 10%
+
+    power_3v3 ~ ldo.power_out
+
+module Project:
+    power_supply = new PowerSupply
+    esp = new ESP32_C6_MINI_1_N4
+    accel = new LIS2DH12TR
+
+    # connect power
+    power_supply.power_3v3 ~ esp.power

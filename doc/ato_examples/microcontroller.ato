@@ -1,0 +1,30 @@
+from "generics/interfaces.ato" import Pair, Power
+from "generics/resistors.ato" import Resistor
+from "generics/buttons.ato" import ButtonPullup, ButtonSKRPACE010
+
+module Microcontroller:
+    """
+    A simple microcontroller module with a single button input.
+    In a real design this would include additional signals and power pins.
+    """
+    btn_input = new Pair
+
+module Test:
+    # Instantiate a common power supply
+    power = new Power
+    
+    # Create a button pullup network (initially using a placeholder NoButton)
+    btn_pullup = new ButtonPullup
+    
+    # Instantiate a microcontroller
+    micro = new Microcontroller
+
+    # Replace the placeholder with an actual button component
+    btn_pullup.btn -> ButtonSKRPACE010
+
+    # Connect the button pullup's output to the microcontroller's button input
+    micro.btn_input ~ btn_pullup.output
+
+    # Connect common power lines
+    power.vcc ~ btn_pullup.power.vcc
+    power.gnd ~ btn_pullup.power.gnd

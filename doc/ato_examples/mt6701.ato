@@ -1,0 +1,65 @@
+import Power from "generics/interfaces.ato"
+import I2C from "generics/interfaces.ato"
+import SSI from "generics/interfaces.ato"
+import QEP from "generics/interfaces.ato"
+import Analog from "generics/interfaces.ato"
+import Capacitor from "generics/capacitors.ato"
+
+component _MT6701CT_STD:
+    # component MT6701CT-STD
+    footprint = "SOP-8_L4.9-W3.9-P1.27-LS6.0-BL"
+    lcsc_id = "C2856764"
+    mpn = "C2856764"
+    # pins
+    signal VDD ~ pin 1
+    signal MODE ~ pin 2
+    signal OUT ~ pin 3
+    signal GND ~ pin 4
+    signal PUSH ~ pin 5
+    signal A ~ pin 6
+    signal B ~ pin 7
+    signal Z ~ pin 8
+
+
+module Project:
+    ic = new _MT6701CT_STD
+
+    power = new Power
+    power.vcc ~ ic.VDD
+    power.gnd ~ ic.GND
+
+    input_cap = new Capacitor
+    input_cap.value = 100nF +/- 20%
+    input_cap.voltage = 10V to 50V
+    input_cap.power ~ power
+
+    # Configure mode pin for I2C/SSI
+    ic.MODE ~ power.vcc
+
+    signal push
+    push ~ ic.PUSH
+    analog = new Analog
+    analog.io ~ ic.OUT
+    analog.gnd ~ power.gnd
+
+    i2c = new I2C
+    i2c.scl ~ ic.B
+    i2c.sda ~ ic.A
+    i2c.gnd ~ power.gnd
+
+    ssi = new SSI
+    ssi.do ~ ic.A
+    ssi.clk ~ ic.B
+    ssi.csn ~ ic.Z
+    ssi.gnd ~ power.gnd
+
+
+module MT6701_QEP from MT6701:
+    # Configure mode pin for QEP
+    ic.MODE ~ power.gnd
+
+    qep = new QEP
+    qep.a ~ ic.A
+    qep.b ~ ic.B
+    qep.z ~ ic.Z
+    qep.gnd ~ power.gnd

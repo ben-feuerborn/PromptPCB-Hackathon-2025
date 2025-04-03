@@ -1,0 +1,16 @@
+poses:
+  schematic:
+    elec/src/simplevoltagedivider.ato:Simplevoltagedivider::r_bottom:
+      mirror_x: false
+      mirror_y: false
+      position:
+        x: -45.0
+        y: -15.0
+      rotation: 0
+    elec/src/simplevoltagedivider.ato:Simplevoltagedivider::r_top:
+      mirror_x: false
+      mirror_y: false
+      position:
+        x: -105.0
+        y: 0.0
+      rotation: 0

@@ -1,0 +1,31 @@
+from "generics/interfaces.ato" import Net
+from "generics/resistors.ato" import Resistor
+from "generics/interfaces.ato" import Power
+
+module Simplevoltagedivider:
+    """
+    Simple Voltage Divider Module
+    """
+
+    # Power input
+    power = new Power
+
+    # Components
+    r_top = new Resistor
+    r_top.package = "0201"
+    r_bottom = new Resistor
+    r_bottom.package = "0201"
+
+    # Set resistor values (attributes)
+    r_top.value = 10kohm +/- 10%
+    r_bottom.value = 10kohm +/- 10%
+
+
+    # Connect resistors in series
+    power.vcc ~ r_top.p1
+    r_top.p2 ~ r_bottom.p1
+
+    r_bottom.p2 ~ power.gnd
+
+    # Voltage output
+    output = mid_node

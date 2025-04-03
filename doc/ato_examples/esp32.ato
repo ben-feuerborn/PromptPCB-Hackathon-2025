@@ -1,0 +1,9 @@
+import ESP32S3 from "esp32-s3/elec/src/esp32-s3.ato"
+import Power from "generics/interfaces.ato"
+
+# remember to run ato install esp32-s3
+
+module Project:
+   power3v3 = new Power
+   micro = new ESP32S3
+   micro.power ~ power3v3
